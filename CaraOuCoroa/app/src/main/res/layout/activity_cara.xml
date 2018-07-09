@@ -4,30 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#61BD8C	"
-    tools:context=".MainActivity">
+    android:background="#61BD8C"
+    tools:context=".caraActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/moedaCaraId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.164"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintVertical_bias="0.182"
+        app:srcCompat="@drawable/moeda_cara" />
 
     <ImageView
-        android:id="@+id/jogarId"
+        android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75"
-        app:srcCompat="@drawable/botao_jogar" />
+        app:layout_constraintVertical_bias="0.88"
+        app:srcCompat="@drawable/botao_voltar" />
 </android.support.constraint.ConstraintLayout>
