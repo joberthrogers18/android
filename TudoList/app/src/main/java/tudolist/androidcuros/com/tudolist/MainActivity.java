@@ -7,10 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
@@ -18,6 +21,8 @@ public class MainActivity extends Activity {
     private EditText texto;
     private ListView lista;
     private SQLiteDatabase bancoDados;
+    private ArrayAdapter<String> itensAdaptador;
+    private ArrayList<String> itens;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +31,6 @@ public class MainActivity extends Activity {
 
         botaoAdicionar = findViewById(R.id.botaoAdicionarId);
         texto = findViewById(R.id.textoId);
-        lista = findViewById(R.id.listViewId);
 
         try {
 
@@ -50,23 +54,8 @@ public class MainActivity extends Activity {
                 }
             });
 
-
-            // Recupera as tarefas
-            Cursor cursor = bancoDados.rawQuery("SELECT * FROM tarefas",null); // cursor da linhas
-
-            //Recupera o id das colunas
-            int indiceColunaId = cursor.getColumnIndex("id");
-            int indiceColunaTarefa = cursor.getColumnIndex("tarefa");
-
-            // listar as tarefas
-
-            cursor.moveToFirst();
-            while (cursor != null){
-
-                Log.i("resultado", "Tarefa: " + cursor.getString(indiceColunaTarefa));
-                cursor.moveToNext();
-
-            }
+            //recuperar tarefas
+            recuperarTarefas();
 
 
         }catch (Exception e){
@@ -96,5 +85,42 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
 
+    }
+
+    private void recuperarTarefas(){
+        try {
+            // Recupera as tarefas
+            Cursor cursor = bancoDados.rawQuery("SELECT * FROM tarefas ORDER BY id DESC",null); // cursor da linhas
+
+            //Recupera o id das colunas
+            int indiceColunaId = cursor.getColumnIndex("id");
+            int indiceColunaTarefa = cursor.getColumnIndex("tarefa");
+
+            //lista
+            lista = findViewById(R.id.listViewId);
+
+            //criar adatador
+            itens = new ArrayList<String>();
+            itensAdaptador = new ArrayAdapter<String>(
+                    getApplicationContext(),
+                    android.R.layout.simple_list_item_2,
+                    android.R.id.text2,
+                    itens);
+            lista.setAdapter( itensAdaptador );
+
+
+            // listar as tarefas
+
+            cursor.moveToFirst();
+            while (cursor != null){
+
+                Log.i("resultado", "Tarefa: " + cursor.getString(indiceColunaTarefa));
+                itens.add(cursor.getString( indiceColunaTarefa )); // adicionar elementoas ao ArrayList
+                cursor.moveToNext();
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
