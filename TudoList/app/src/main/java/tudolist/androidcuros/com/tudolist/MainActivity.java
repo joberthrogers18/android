@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -42,9 +43,10 @@ public class MainActivity extends Activity {
             botaoAdicionar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String textoDigitado = texto.getText().toString();
 
-                    bancoDados.execSQL("INSERT INTO tarefas(tarefa) VALUES('" + textoDigitado + "')");
+                    String textoDigitado = texto.getText().toString();
+                    salvarTarefa(textoDigitado);
+
                 }
             });
 
@@ -70,5 +72,29 @@ public class MainActivity extends Activity {
         }catch (Exception e){
             e.printStackTrace(); // printa o erro na tela
         }
+    }
+
+    private void salvarTarefa(String texto){
+
+        try {
+
+            if(texto.equals("")){
+                Toast.makeText(
+                        MainActivity.this,
+                        "É necessário digitar algo!",
+                        Toast.LENGTH_LONG
+                ).show();
+            }else {
+                bancoDados.execSQL("INSERT INTO tarefas(tarefa) VALUES('" + texto + "')");
+                Toast.makeText(
+                        MainActivity.this,
+                        "Tarefa salva com sucesso!",
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
