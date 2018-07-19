@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ public class MainActivity extends Activity {
     private SQLiteDatabase bancoDados;
     private ArrayAdapter<String> itensAdaptador;
     private ArrayList<String> itens;
+    private ArrayList<Integer> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,17 @@ public class MainActivity extends Activity {
                 }
             });
 
+            //lista
+            lista = findViewById(R.id.listViewId);
+
+            lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Log.i("ITEM: ", i  + "/"+ ids.get(i) );
+                    removerTarefa(ids.get(i));
+                }
+            });
+
             //recuperar tarefas
             recuperarTarefas();
 
@@ -63,7 +76,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void salvarTarefa(String texto){
+    private void salvarTarefa(String textoDigitado){
 
         try {
 
@@ -74,12 +87,14 @@ public class MainActivity extends Activity {
                         Toast.LENGTH_LONG
                 ).show();
             }else {
-                bancoDados.execSQL("INSERT INTO tarefas(tarefa) VALUES('" + texto + "')");
+                bancoDados.execSQL("INSERT INTO tarefas(tarefa) VALUES('" + textoDigitado + "')");
                 Toast.makeText(
                         MainActivity.this,
                         "Tarefa salva com sucesso!",
                         Toast.LENGTH_LONG
                 ).show();
+                recuperarTarefas();
+                texto.setText("");
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -96,11 +111,9 @@ public class MainActivity extends Activity {
             int indiceColunaId = cursor.getColumnIndex("id");
             int indiceColunaTarefa = cursor.getColumnIndex("tarefa");
 
-            //lista
-            lista = findViewById(R.id.listViewId);
-
             //criar adatador
             itens = new ArrayList<String>();
+            ids = new ArrayList<Integer>(); // instanciando arrays
             itensAdaptador = new ArrayAdapter<String>(
                     getApplicationContext(),
                     android.R.layout.simple_list_item_2,
@@ -116,9 +129,21 @@ public class MainActivity extends Activity {
 
                 Log.i("resultado", "Tarefa: " + cursor.getString(indiceColunaTarefa));
                 itens.add(cursor.getString( indiceColunaTarefa )); // adicionar elementoas ao ArrayList
+                ids.add(Integer.parseInt(cursor.getString(indiceColunaId))); // pegando os ids
                 cursor.moveToNext();
 
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void removerTarefa(Integer id){
+        try {
+
+            bancoDados.execSQL("DELETE FROM tarefas WHERE id="+id);
+            recuperarTarefas();
+
         }catch (Exception e){
             e.printStackTrace();
         }
