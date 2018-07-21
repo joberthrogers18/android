@@ -21,9 +21,20 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance(); //pega instancia da autenticação
 
+        firebaseAuth.signOut(); // desloga o usuario
+
+        if(firebaseAuth.getCurrentUser() != null){// recuperar usuario atual, se for null não tem usuario
+
+            Log.i("verificarUser", "Usuario esta logado");
+        }
+        else{
+            Log.i("verificarUser", "Usuario esta não logado");
+        }
+
+
         //Login Usuario
 
-        firebaseAuth.signInWithEmailAndPassword("joberth.rogers18@gmail.com", "2323121")
+        /*firebaseAuth.signInWithEmailAndPassword("joberth.rogers18@gmail.com", "2323121")
                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -36,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
-                });
+                });*/
 
         //cadastro do usuario
 
