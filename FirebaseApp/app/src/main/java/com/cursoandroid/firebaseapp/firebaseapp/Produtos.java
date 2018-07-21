@@ -5,7 +5,7 @@ public class Produtos {
     private String cor;
     private String fabricante;
 
-    private Produtos(){
+    public Produtos(){
 
     }
 
