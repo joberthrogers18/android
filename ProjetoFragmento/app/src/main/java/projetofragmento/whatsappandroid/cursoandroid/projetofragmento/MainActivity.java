@@ -10,6 +10,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     private Button botaoLogar;
+    private Boolean status = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,13 +21,29 @@ public class MainActivity extends AppCompatActivity {
         botaoLogar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); //preparado para fazer as edições no fragmento
 
-                LoginFragment loginFragment = new LoginFragment();
+                if(status){
+                    LoginFragment loginFragment = new LoginFragment();
 
-                fragmentTransaction.add(R.id.rl_container_fragment, loginFragment); // adicionar ao container nosso fragmento
-                fragmentTransaction.commit(); // confirmar a alteração
+                    fragmentTransaction.add(R.id.rl_container_fragment, loginFragment); // adicionar ao container nosso fragmento
+                    fragmentTransaction.commit(); // confirmar a alteração
+                    botaoLogar.setText("Cadastre-se");
+                    status = false;
+                }
+                else{
+                    CadastroFragment cadastroFragment = new CadastroFragment();
+
+                    fragmentTransaction.add(R.id.rl_container_fragment,cadastroFragment);
+                    fragmentTransaction.commit(); // finalizar edição de fragment
+                    botaoLogar.setText("Logar");
+                    status = true;
+                }
+
+
             }
         });
     }
